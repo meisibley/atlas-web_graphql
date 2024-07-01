@@ -1,5 +1,5 @@
 //require graphql, add GraphQLObjectType object using the object destructuring syntax
-const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID} = require('graphql');
+const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLSchema} = require('graphql');
 
 var TaskType = new GraphQLObjectType({
     name: 'Task',
@@ -9,5 +9,17 @@ var TaskType = new GraphQLObjectType({
       weight: { type: GraphQLInt },
       description: { type: GraphQLString },
     })
-  });
+});
 
+var RootQuery = new GraphQLObjectType({
+    name: 'RootQueryType',
+    fields: () => ({
+        task: {
+            type: TaskType,
+            args: { id: { type: GraphQLID } },
+        },
+        resolve: (parent, {id}) => {}
+    }),
+});
+
+exports.schema = new GraphQLSchema({query: RootQuery});
