@@ -49,9 +49,16 @@ const TaskType = new GraphQLObjectType({
     name: 'Task',
     fields: () => ({
       id: { type: GraphQLID },
+      projectId: { type: GraphQLID },
       title: { type: GraphQLString },
       weight: { type: GraphQLInt },
       description: { type: GraphQLString },
+      project: {
+        type: TaskType,
+        resolve(parent, args) {
+            return lodash.find(projects, { id: parent.projectId });
+        }
+      }
     })
 });
 
@@ -62,6 +69,7 @@ const RootQuery = new GraphQLObjectType({
             type: TaskType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
+                // return a single task with args.id
                 return lodash.find(tasks, { id: args.id });
             }
         },
@@ -69,7 +77,7 @@ const RootQuery = new GraphQLObjectType({
 			type: ProjectType,
 			args: { id: { type: GraphQLID } },
 			resolve(parent, args) {
-				// returns a single project
+				// returns a single project with args.id
 				return lodash.find(projects, { id: args.id });
 			}
 		},
@@ -83,6 +91,7 @@ const RootQuery = new GraphQLObjectType({
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
+                // return all tasks
                 return tasks;
             }
         },
@@ -99,11 +108,11 @@ const ProjectType = new GraphQLObjectType({
 		tasks: {
 			type: new GraphQLList(TaskType),
 			resolve(parent, args) {
-				// filters through tasks array and returns only tasks with the same projectId
+				// filter through tasks array and returns only tasks with same projectId
 				return lodash.filter(tasks, { projectId: parent.id });
 			}
 		} 
 	})
 });
 
-exports.schema = new GraphQLSchema({query: RootQuery});
+module.exports = shema;
