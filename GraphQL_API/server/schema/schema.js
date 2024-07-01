@@ -1,6 +1,7 @@
 //require graphql, add GraphQLObjectType object using the object destructuring syntax
 const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLSchema} = require('graphql');
 const lodash = require('lodash');
+const { resolve } = require('path/posix');
 
 const tasks = [
 	{
@@ -20,6 +21,27 @@ const tasks = [
 		Create the head and body sections inside the html tag,
 		create the head and body tags (empty) in this order`,
 		projectId: '1'
+	}
+];
+
+const projects = [
+	{
+		id: '1',
+		title: 'Advanced HTML',
+		weight: 1,
+		description: `Welcome to the Web Stack specialization. The 3 first projects will
+		give you all basics of the Web development: HTML, CSS and Developer tools. In this project,
+		you will learn how to use HTML tags to structure a web page. No CSS, no styling - don’t worry,
+		the final page will be “ugly” it’s normal, it’s not the purpose of this project.
+		Important note: details are important! lowercase vs uppercase / wrong letter… be careful!`
+	},
+	{
+		id: '2',
+		title: 'Bootstrap',
+		weight: 1,
+		description: `Bootstrap is a free and open-source CSS framework directed at responsive,
+		mobile-first front-end web development. It contains CSS and JavaScript design templates
+		for typography, forms, buttons, navigation, and other interface components.`
 	}
 ];
 
@@ -43,6 +65,21 @@ const RootQuery = new GraphQLObjectType({
                 return lodash.find(tasks, { id: args.id });
             }
         },
+        project: {
+			type: ProjectType,
+			args: { id: { type: GraphQLID } },
+			resolve(parent, args) {
+				// returns a single project
+				return lodash.find(projects, { id: args.id });
+			}
+		},
+        projects: {
+			type: new GraphQLList(ProjectType),
+			resolve(parent, args) {
+				// returns all projects
+				return projects;
+			}
+		},
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
@@ -50,6 +87,23 @@ const RootQuery = new GraphQLObjectType({
             }
         },
     }),
+});
+
+const ProjectType = new GraphQLObjectType({
+	name: 'Project',
+	fields: () => ({
+		id: { type: GraphQLID },
+		title: { type: GraphQLString },
+		weight: { type: GraphQLInt },
+		description: { type: GraphQLString },
+		tasks: {
+			type: new GraphQLList(TaskType),
+			resolve(parent, args) {
+				// filters through tasks array and returns only tasks with the same projectId
+				return lodash.filter(tasks, { projectId: parent.id });
+			}
+		} 
+	})
 });
 
 exports.schema = new GraphQLSchema({query: RootQuery});
