@@ -1,5 +1,5 @@
-
-const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLSchema} = require('graphql');
+//require graphql, add GraphQLObjectType object using the object destructuring syntax
+const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID} = require('graphql');
 
 var TaskType = new GraphQLObjectType({
     name: 'Task',
