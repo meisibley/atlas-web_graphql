@@ -8,7 +8,6 @@ const { schema } = require('./schema/schema');
 var app = express();
 
 app.use('/graphql', graphqlHTTP({
-  //schema
   schema: schema,
   graphiql: true,
 }));
