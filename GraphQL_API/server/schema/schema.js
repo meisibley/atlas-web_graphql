@@ -1,5 +1,5 @@
 //require graphql, add GraphQLObjectType object using the object destructuring syntax
-const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLSchema} = require('graphql');
+const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList, GraphQLSchema} = require('graphql');
 const lodash = require('lodash');
 const { resolve } = require('path/posix');
 
@@ -115,4 +115,8 @@ const ProjectType = new GraphQLObjectType({
 	})
 });
 
-module.exports = shema;
+const schema = new GraphQLSchema({
+	query: RootQuery,
+});
+
+module.exports = schema;
