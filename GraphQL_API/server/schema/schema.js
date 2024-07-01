@@ -1,5 +1,5 @@
 //require graphql, add GraphQLObjectType object using the object destructuring syntax
-const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList, GraphQLSchema} = require('graphql');
+const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList, GraphQLSchema, GraphQLNonNull} = require('graphql');
 const lodash = require('lodash');
 const { resolve } = require('path/posix');
 
@@ -115,8 +115,51 @@ const ProjectType = new GraphQLObjectType({
 	})
 });
 
+const Mutation = new GraphQLObjectType({
+	name: 'Mutation',
+	fields: () => ({
+		addProject: {
+			type: ProjectType,
+			args: {
+				title: { type: new GraphQLNonNull(GraphQLString) },
+				weight: { type: new GraphQLNonNull(GraphQLInt) },
+				description: { type: new GraphQLNonNull(GraphQLString) }
+			},
+			resolve: (parent, args) => {
+				// new project, save in db and return
+				let prj = new Project({
+					title: args.title,
+					weight: args.weight,
+					description: args.description,
+				});
+				return prj.save();
+			}
+		},
+		addTask: {
+			type: TaskType,
+			args: {
+				title: { type: new GraphQLNonNull(GraphQLString) },
+				weight: { type: new GraphQLNonNull(GraphQLInt) },
+				description: { type: new GraphQLNonNull(GraphQLString) },
+				projectId: {type: GraphQLNonNull(GraphQLID)}
+			},
+			resolve: (parent, args) => {
+				// new task save in db and return
+				const tasker = new Task({
+					title: args.title,
+					weight: args.weight,
+					description: args.description,
+					projectId: args.projectId
+				});
+				return tasker.save();
+			},
+		},
+	})
+});
+
 const schema = new GraphQLSchema({
 	query: RootQuery,
+    mutation: Mutation
 });
 
 module.exports = schema;
