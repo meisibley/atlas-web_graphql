@@ -3,23 +3,6 @@
 //   //useEffect
 // } from "react";
 
-// function AddTask(props) {
-//   const [inputs, setInputs] = useState({
-//     title: '',
-//     weight: 1,
-//     description: '',
-//     projectId: ''
-//   });
-
-  // const handleChange = (e) => {
-  //       const newInputs = {
-  //         ...inputs
-  //       };
-  //       if (e.target.name === "weight") newInputs[e.target.name] = parseInt(e.target.value)
-  //       else newInputs[e.target.name] = e.target.value
-  //       setInputs(newInputs)
-  // }
-
 import { getProjectsQuery, addTaskMutation, getTasksQuery } from '../queries/queries';
 import { Component } from 'react';
 import { graphql } from 'react-apollo';
