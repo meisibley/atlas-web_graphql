@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component } from 'react';
 import { graphql } from 'react-apollo';
 import { getTasksQuery } from '../queries/queries';
 import TaskDetails from './TaskDetails';
@@ -32,7 +32,7 @@ class TaskList extends Component {
       <ul id ="task-list">
         { this.displayTasks() }
       </ul> 
-      <TaskDetails taskId={ this.state.selected}/>
+      <TaskDetails taskId={this.state.selected}/>
       </div >
     );
   }
