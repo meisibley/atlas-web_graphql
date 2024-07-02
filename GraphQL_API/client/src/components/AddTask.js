@@ -20,27 +20,29 @@ class AddTask extends Component {
 	};
 
 	displayProjects() {
-		var data = this.props.data;
-		if (data.loading) {
+		var data = this.props.getProjectsQuery;
+		if(data.loading) {
 			return (
-				<option> Loading projects... </option>
+				<option disabled>Loading projects... </option>
 			);
 		} else {
 			return data.projects.map(project => {
-				return ( <option key = {
-					project.id
-				}
-				value = {
-					project.id
-				} > {
-					project.title
-				} </option>);
+				return ( <option key={ project.id } value={ project.id }> { project.title} </option> );
 			});
 		}
 	}
 
 	submitForm(e) {
 		e.preventDefault();
+    this.props.addTaskMutation({
+      variables:{
+          title: this.state.title,
+          weight: this.state.weight,
+          description: this.state.description,
+          projectId: this.state.projectId
+      },
+      refetchQueries:[{query: getTasksQuery}]
+    });
 	}
 
 	render() {

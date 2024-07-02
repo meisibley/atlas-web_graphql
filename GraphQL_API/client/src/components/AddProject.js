@@ -1,8 +1,4 @@
-import {
-  useState,
-  //useEffect
-} from "react";
-import { getProjectsQuery } from '../queries/queries';
+import { getProjectsQuery, addProjectMutation } from '../queries/queries';
 import { Component } from 'react';
 import { graphql } from 'react-apollo';
 import {flowRight as compose } from 'lodash';
