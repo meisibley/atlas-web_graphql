@@ -116,8 +116,8 @@ const ProjectType = new GraphQLObjectType({
 			type: new GraphQLList(TaskType),
 			resolve(parent, args) {
 				// filter through tasks array and returns only tasks with same projectId
-				// return lodash.filter(tasks, { projectId: parent.id });
-                return Task.find({ projectId: parent.id });
+				return lodash.filter(tasks, { projectId: parent.id });
+                // return Task.find({ projectId: parent.id });
 			}
 		} 
 	})
