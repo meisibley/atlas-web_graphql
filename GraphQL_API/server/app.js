@@ -3,9 +3,9 @@ const { graphqlHTTP } = require('express-graphql');
 const { schema } = require('./schema/schema');
 const Mongoose = require('mongoose');
 require('dotenv').config('./.env');
-const PWD = process.env.MONGO_DB_PSW;
 
 const app = express();
+const mongouri = 'mongodb+srv://meisibley:JMn0uiZCO8kXgsot@cluster0.cqszuq1.mongodb.net/';
 
 const cors = require('cors');
 // allow cross-origin requests
@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 	next();
   });
 
-Mongoose.connect(PWD, { useNewUrlParser: true, useUnifiedTopology: true });
+Mongoose.connect(mongouri, { useNewUrlParser: true, useUnifiedTopology: true });
 Mongoose.connection.once('open', () => {
   console.log('connected to database');
 });

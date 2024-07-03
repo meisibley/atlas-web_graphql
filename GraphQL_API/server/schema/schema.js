@@ -1,7 +1,7 @@
 //require graphql, add GraphQLObjectType object using the object destructuring syntax
 const{GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList, GraphQLSchema, GraphQLNonNull} = require('graphql');
 const lodash = require('lodash');
-const { resolve } = require('path/posix');
+//const { resolve } = require('path/posix');
 const Project = require('../models/project');
 const Task = require('../models/task');
 
