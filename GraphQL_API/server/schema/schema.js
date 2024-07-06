@@ -56,7 +56,7 @@ const TaskType = new GraphQLObjectType({
       weight: { type: GraphQLInt },
       description: { type: GraphQLString },
       project: {
-        type: TaskType,
+        type: ProjectType,
         resolve(parent, args) {
             return lodash.find(projects, { id: parent.projectId });
             // return Project.findById(parent.projectId);
