@@ -2,8 +2,8 @@
 const {GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList, GraphQLSchema, GraphQLNonNull} = require('graphql');
 const lodash = require('lodash');
 //const { resolve } = require('path/posix');
-//const Project = require('../models/project');
-//const Task = require('../models/task');
+const Project = require('../models/project');
+const Task = require('../models/task');
 
 const tasks = [
 	{
@@ -125,7 +125,7 @@ const ProjectType = new GraphQLObjectType({
 
 const Mutation = new GraphQLObjectType({
 	name: 'Mutation',
-	fields: () => ({
+	fields: {
 		addProject: {
 			type: ProjectType,
 			args: {
@@ -133,7 +133,7 @@ const Mutation = new GraphQLObjectType({
 				weight: { type: new GraphQLNonNull(GraphQLInt) },
 				description: { type: new GraphQLNonNull(GraphQLString) }
 			},
-			resolve: (parent, args) => {
+			resolve(parent, args) {
 				// new project, save in db and return
 				let prject = new Project({
 					title: args.title,
@@ -151,9 +151,9 @@ const Mutation = new GraphQLObjectType({
 				description: { type: new GraphQLNonNull(GraphQLString) },
 				projectId: {type: GraphQLNonNull(GraphQLID)}
 			},
-			resolve: (parent, args) => {
+			resolve(parent, args) {
 				// new task save in db and return
-				const tasker = new Task({
+				let tasker = new Task({
 					title: args.title,
 					weight: args.weight,
 					description: args.description,
@@ -162,7 +162,7 @@ const Mutation = new GraphQLObjectType({
 				return tasker.save();
 			},
 		},
-	})
+	}
 });
 
 module.exports = new GraphQLSchema({
